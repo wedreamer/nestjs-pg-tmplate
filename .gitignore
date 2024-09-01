@@ -61,3 +61,5 @@ config.yml
 # volume
 .volume
 
+# product db
+data-source-pro.ts

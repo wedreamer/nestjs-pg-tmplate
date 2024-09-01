@@ -4,11 +4,12 @@
 
 ## 相关功能
 
+- ts strict true
 - debugger vscode
 - eslint, prettier, cSpell, commitLint, husky
 - config yml env 支持
 - docker compose pg
-- typeorm migration
+- typeorm migration soft-delete
 - user login register rbac
 - app metaData
 
@@ -83,6 +84,31 @@ networks:
 ```bash
 # redis pgsql
 docker compose -f docker-compose-depend.yml up -d
+```
+
+## typeorm pg
+
+```bash
+nest g lib db
+```
+
+```bash
+pnpm add --save @nestjs/typeorm typeorm pg
+```
+
+## 数据迁移
+
+```bash
+# 生成迁移 (根据实体信息)
+npm run typeorm migration:generate -n ./libs/db/src/migrations/fix-data
+# 新建迁移
+npx typeorm migration:create ./libs/db/src/migrations/init-data
+# 迁移
+npm run typeorm migration:run --fake
+# 回滚
+npm run typeorm migration:revert
+# 同步实体
+npm run typeorm schema:sync
 ```
 
 ## 提交代码
