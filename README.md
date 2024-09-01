@@ -96,6 +96,26 @@ nest g lib db
 pnpm add --save @nestjs/typeorm typeorm pg
 ```
 
+## user login register rbac
+
+```bash
+pnpm add bcrypt @nestjs/jwt @nestjs/passport passport-jwt
+```
+
+```bash
+nest g mo auth
+nest g co auth
+nest g s auth
+
+nest g mo user
+nest g co user
+nest g s user
+
+nest g mo role
+nest g co role
+nest g s role
+```
+
 ## 数据迁移
 
 ```bash
