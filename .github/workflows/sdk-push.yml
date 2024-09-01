@@ -1,0 +1,88 @@
+name: Generate and Push SDK
+
+on:
+  push:
+    # branches:
+    #   - openapi
+    tags:
+      - "v*"
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+
+    services:
+      db:
+        image: postgres:latest
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_DB: ebook
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "20"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Copy config file
+        run: cp config.example.yml config.yml
+
+      - name: Wait for PostgreSQL to be ready
+        run: |
+          until pg_isready -h localhost -p 5432; do
+            sleep 1
+          done
+
+      - name: Synchronize schema
+        run: npm run typeorm schema:sync
+
+      - name: Install dependencies and start server
+        run: |
+          npm run start &
+          sleep 10
+
+      - name: Download swagger.json
+        run: |
+          mkdir -p /tmp/openapi
+          curl http://localhost:3000/api-json > /tmp/openapi/swagger-spec.json
+
+      - name: Generate SDK
+        run: |
+          npm run gen:openapi-ts
+
+      - name: Checkout target repository
+        uses: actions/checkout@v2
+        with:
+          repository: "zhengjue-ebook/openapi"
+          token: ${{ secrets.OPENAPI_GITHUB_TOKEN }}
+
+      - name: Copy SDK to target repository
+        run: |
+          find . -not -name .git -not -path './.git/*' -delete
+          cp -r /tmp/openapi/sdk/* ./
+
+      - name: Push SDK to target repository
+        run: |
+          git config --global user.email "xxx@gmail.com"
+          git config --global user.name "xxx"
+          cd .
+          git add .
+          git commit -m "Update SDK"
+          git push
+        env:
+          GIT_TOKEN: ${{ secrets.OPENAPI_GITHUB_TOKEN }}
