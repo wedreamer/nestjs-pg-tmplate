@@ -13,6 +13,8 @@
 - user login register rbac
 - app metaData
 - open sdk generate
+- dayjs
+- logger
 
 ## commitLint
 
@@ -120,10 +122,20 @@ nest g s role
 ## open sdk generate
 
 ```bash
+pnpm add @nestjs/swagger @hey-api/openapi-ts @hey-api/client-fetch -D
+```
+
+```bash
 # change branch to openapi
 npm version patch
 git push --tags
 git push
+```
+
+## dayjs and logger
+
+```bash
+pnpm i winston nest-winston dayjs
 ```
 
 ## 数据迁移
