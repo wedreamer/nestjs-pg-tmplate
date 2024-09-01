@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint", // ESLint 插件
+    "esbenp.prettier-vscode", // Prettier 插件
+    "rangav.vscode-thunder-client", // thunder client
+    "streetsidesoftware.code-spell-checker", // spell
+  ]
+}
