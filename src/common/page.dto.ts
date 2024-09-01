@@ -1,3 +1,5 @@
+import { applyDecorators, Type } from '@nestjs/common';
+import { ApiExtraModels, ApiOkResponse, getSchemaPath } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
 import { IsOptional } from 'class-validator';
 import { IsPageCurrent, IsPagePageSize } from 'src/_decorator/is-page';
@@ -33,7 +35,34 @@ export interface PaginationExtend {
   take: number;
 }
 
-export type PaginationRes = {
-  total: number;
-} & Pick<pageDto, 'current'> &
-  Pick<pageDto, 'pageSize'>;
+export class PaginationRes {
+  total!: number;
+  current!: number;
+  pageSize!: number;
+}
+
+export class PageRes {
+  pagination!: PaginationRes;
+}
+
+export const ApiPageRes = <TModel extends Type<any>>(model: TModel) => {
+  return applyDecorators(
+    ApiExtraModels(PageRes, model),
+    ApiOkResponse({
+      schema: {
+        title: `PageResOf${model.name}`,
+        allOf: [
+          { $ref: getSchemaPath(PageRes) },
+          {
+            properties: {
+              list: {
+                type: 'array',
+                items: { $ref: getSchemaPath(model) },
+              },
+            },
+          },
+        ],
+      },
+    }),
+  );
+};
