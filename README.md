@@ -12,6 +12,7 @@
 - typeorm migration soft-delete
 - user login register rbac
 - app metaData
+- open sdk generate
 
 ## commitLint
 
@@ -114,6 +115,15 @@ nest g s user
 nest g mo role
 nest g co role
 nest g s role
+```
+
+## open sdk generate
+
+```bash
+# change branch to openapi
+npm version patch
+git push --tags
+git push
 ```
 
 ## 数据迁移
