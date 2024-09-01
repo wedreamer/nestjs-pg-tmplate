@@ -12,3 +12,28 @@
 - user login register rbac
 - app metaData
 
+## commitLint
+
+```jsonc
+// npx husky init
+"prepare": "husky"
+```
+
+```bash
+pnpm i @commitlint/cli @commitlint/config-conventional husky -D
+```
+
+```js
+// commitlint.config.js
+module.exports = {
+  extends: ['@commitlint/config-conventional'],
+};
+```
+
+## 提交代码
+
+```bash
+pnpm lint
+# git commit -m "type: subject"
+# rules view https://www.npmjs.com/package/@commitlint/config-conventional
+```
