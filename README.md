@@ -30,6 +30,13 @@ module.exports = {
 };
 ```
 
+## config yml env
+
+```bash
+pnpm add --save class-validator class-transformer @nestjs/config js-yaml
+pnpm add @types/js-yaml -D
+```
+
 ## 提交代码
 
 ```bash

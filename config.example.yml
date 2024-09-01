@@ -1,0 +1,13 @@
+env: dev
+appName: zhengjue-ebook-server
+security: 
+  jwtKey: xxx
+  # /** expressed in seconds or a string describing a time span [zeit/ms](https://github.com/zeit/ms.js).  Eg: 60, "2 days", "10h", "7d" */
+  jwtExpiresIn: 10h
+
+db:
+  host: localhost
+  port: 5432
+  username: postgres
+  password: postgres
+  database: ebook
